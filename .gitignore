@@ -1,0 +1,123 @@
+# =========================================
+# .NET / C#
+# =========================================
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+build/
+build_output/
+publish/
+out/
+artifacts/
+*.dll
+*.exe
+*.pdb
+*.mdb
+*.cache
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*.log
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+*.nupkg
+*.snupkg
+*.symbols.nupkg
+
+# =========================================
+# Visual Studio
+# =========================================
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+.vscode/
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+.idea/
+*.DotSettings.user
+
+# =========================================
+# NuGet
+# =========================================
+project.lock.json
+project.fragment.lock.json
+packages/
+!packages/build/
+*.nuget.props
+*.nuget.targets
+**/[Pp]ackages/*
+
+# =========================================
+# Кэш и инструменты
+# =========================================
+.vs/
+.axo/
+*.binlog
+*.coverage
+*.coveragexml
+TestResults/
+[Tt]est[Rr]esult*/
+BenchmarkDotNet.Artifacts/
+.vstest/
+coverage*.json
+coverage*.xml
+coverage*.info
+
+# =========================================
+# Логи самого NetSaver
+# =========================================
+NetSaver_log.txt
+NetSaver_crash.txt
+
+# =========================================
+# Windows
+# =========================================
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+*.stackdump
+*.cab
+*.msi
+*.msm
+*.msp
+
+# =========================================
+# macOS / Linux
+# =========================================
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+*~

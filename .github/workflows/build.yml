@@ -1,0 +1,107 @@
+name: Build & Release
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*.*.*'
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  DOTNET_VERSION: '10.0.x'
+  PROJECT_PATH: 'src/NetSaver/NetSaver.csproj'
+  RUNTIME: 'win-x64'
+
+jobs:
+  build:
+    name: Build NetSaver
+    runs-on: windows-latest
+
+    steps:
+      - name: Клонирование репозитория
+        uses: actions/checkout@v4
+
+      - name: Установка .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Восстановление пакетов
+        run: dotnet restore ${{ env.PROJECT_PATH }}
+
+      - name: Сборка релиза
+        run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
+
+      - name: Публикация single-file EXE
+        run: >
+          dotnet publish ${{ env.PROJECT_PATH }}
+          -c Release
+          -r ${{ env.RUNTIME }}
+          --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:DebugType=None
+          -p:DebugSymbols=false
+          -o publish
+
+      - name: Удаление отладочных файлов
+        shell: pwsh
+        run: |
+          Get-ChildItem publish -Filter *.pdb -ErrorAction SilentlyContinue | Remove-Item -Force
+          Get-ChildItem publish -Filter *.xml -ErrorAction SilentlyContinue | Remove-Item -Force
+
+      - name: Показать содержимое publish
+        shell: pwsh
+        run: Get-ChildItem publish | Format-Table Name, Length
+
+      - name: Загрузка артефакта сборки
+        uses: actions/upload-artifact@v4
+        with:
+          name: NetSaver-${{ github.sha }}
+          path: publish/NetSaver.exe
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Проверка тега
+        id: check_tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: pwsh
+        run: |
+          $tag = "${{ github.ref_name }}"
+          Write-Host "Тег: $tag"
+          "tag=$tag" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+
+      - name: Переименование EXE для релиза
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: pwsh
+        run: |
+          $tag = "${{ github.ref_name }}"
+          Copy-Item "publish/NetSaver.exe" "publish/NetSaver-$tag-win-x64.exe"
+
+      - name: Создание релиза на GitHub
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: NetSaver ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
+          files: |
+            publish/NetSaver.exe
+            publish/NetSaver-${{ github.ref_name }}-win-x64.exe
+          body: |
+            ## NetSaver ${{ github.ref_name }}
+
+            Сборка от ${{ github.event.head_commit.timestamp }}.
+
+            ### Установка
+            1. Скачай `NetSaver.exe` ниже.
+            2. Запусти — установка не требуется, это портативный файл.
+            3. Windows попросит права администратора (UAC) — это нужно для применения профилей.
+
+            ### Что нового
+            См. автоматически сгенерированные заметки ниже.
