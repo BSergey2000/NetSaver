@@ -1,5 +1,12 @@
 # NetSaver
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![.NET](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com)
+[![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-0078D6?logo=windows&logoColor=white)]()
+[![Latest release](https://img.shields.io/github/v/release/BSergey2000/NetSaver?color=green)](../../releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/BSergey2000/NetSaver/total?color=blue)](../../releases)
+[![Stars](https://img.shields.io/github/stars/BSergey2000/NetSaver?style=social)](../../stargazers)
+
 **NetSaver** — утилита для Windows, которая сохраняет настройки сетевых адаптеров (IP, маска, шлюз, DNS, режим DHCP) в отдельные профили и позволяет быстро применять их обратно. Удобно, когда приходится часто переключаться между сетями: дом, работа, лаборатория, тестовый стенд.
 
 ![Главное окно](screenshots/main.png)
